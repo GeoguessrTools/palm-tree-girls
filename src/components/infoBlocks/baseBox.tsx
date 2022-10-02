@@ -16,7 +16,7 @@ export const BaseBox:FC<BaseBoxProps> = ({
             <div className="accordion-item">
                 <div className="accordion-title" onClick={() => setIsOpen(!isOpen)}>
                     <div>{title}</div> 
-                    <div>{isOpen ? '+' : '-'}</div>
+                    <div>{isOpen ? '-' : '+'}</div>
                 </div>
                 {isOpen && (<div className="accordion-content">
                     {children}

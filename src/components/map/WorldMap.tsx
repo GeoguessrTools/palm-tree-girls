@@ -1,144 +1,112 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-type CountryOutlineProps = {
-    country: string;
-    onEachFeature: (feature: any, layer: any) => void;
-}
-
-const CountryOutline:FC<CountryOutlineProps> = ({country, onEachFeature}) => {
-    const [countryData, setCountryData] = useState<any>(null);
-
-    const getData = async () => {
-        const data = await axios.get('countries/' + country + '.geojson').catch((err) => {
-            console.log(err)
-        })
-        if(data?.status != 200) {
-            console.log(country)
-        } else {
-            setCountryData({
-                "type": "FeatureCollection",
-                "features": [data?.data]
-            })
-        }
-    }
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    if (countryData) {
-        return <GeoJSON data={countryData} onEachFeature={onEachFeature}/>;
-    } else {
-        return null;
-    }
-}
-
-
 export const WorldMap: FC = () => {
+    const [paths, setPaths] = useState<any[]>([]);
+    const [apiCountries, setApiCountries] = useState<string[]>(['argentina']);
     const navigate = useNavigate();
-    const countries = [
-        "Botswana",
-        "Eswatini",
-        "Ghana",
-        "Kenya",
-        "Lesotho",
-        "Madagascar",
-        "Nigeria",
-        "Senegal",
-        "South Africa",
-        "Tunisia",
-        "Uganda",
-        "Bangladesh",
-        "Bhutan",
-        "Cambodia",
-        "India",
-        "Indonesia",
-        "Israel",
-        "Japan",
-        "Jordan",
-        "Kyrgyzstan",
-        "Laos",
-        "Malaysia",
-        "Mongolia",
-        "Philippines",
-        "Russia",
-        "Singapore",
-        "South Korea",
-        "Sri Lanka",
-        "Taiwan",
-        "Thailand",
-        "United Arab Emirates",
-        "Albania",
-        "Andorra",
-        "Austria",
-        "Belgium",
-        "Bulgaria",
-        "Croatia",
-        "Czech Republic",
-        "Denmark",
-        "Estonia",
-        "Faroe Islands",
-        "Finland",
-        "France",
-        "Germany",
-        "Gibraltar",
-        "Greece",
-        "Hungary",
-        "Iceland",
-        "Ireland",
-        "Isle of Man",
-        "Italy",
-        "Jersey",
-        "Latvia",
-        "Lithuania",
-        "Luxembourg",
-        "Malta",
-        "Monaco",
-        "Montenegro",
-        "Netherlands",
-        "Macedonia",
-        "Norway",
-        "Poland",
-        "Portugla",
-        "Romania",
-        "San Marino",
-        "Serbia",
-        "Slovakia",
-        "Slovenia",
-        "Spain",
-        "Sweden",
-        "Switzerland",
-        "Turkey",
-        "Ukraine",
-        "United Kingdom",
-        "Canada",
-        "Curacao",
-        "Dominican Republic",
-        "Greenland",
-        "Guatemala",
-        "Mexico",
-        "Puerto Rico",
-        "United States",
-        "Virgin Islands",
-        "American Samoa",
-        "Australia",
-        "Guam",
-        "New Zealand",
-        "Northern Mariana Islands",
-        "Argentina",
-        "Bolivia",
-        "Brazil",
-        "Chile",
-        "Colombia",
-        "Ecuador",
-        "Peru",
-        "Uruguay"
-    ]
+    const gameCountries = [
+        "botswana",
+        "eswatini",
+        "ghana",
+        "kenya",
+        "lesotho",
+        "madagascar",
+        "nigeria",
+        "senegal",
+        "south africa",
+        "tunisia",
+        "uganda",
+        "bangladesh",
+        "bhutan",
+        "cambodia",
+        "india",
+        "indonesia",
+        "israel",
+        "japan",
+        "jordan",
+        "kyrgyzstan",
+        "laos",
+        "malaysia",
+        "mongolia",
+        "philippines",
+        "russia",
+        "singapore",
+        "south korea",
+        "sri lanka",
+        "taiwan",
+        "thailand",
+        "united arab emirates",
+        "albania",
+        "andorra",
+        "austria",
+        "belgium",
+        "bulgaria",
+        "croatia",
+        "czech republic",
+        "denmark",
+        "estonia",
+        "faroe islands",
+        "finland",
+        "france",
+        "germany",
+        "gibraltar",
+        "greece",
+        "hungary",
+        "iceland",
+        "ireland",
+        "isle of man",
+        "italy",
+        "jersey",
+        "latvia",
+        "lithuania",
+        "luxembourg",
+        "malta",
+        "monaco",
+        "montenegro",
+        "netherlands",
+        "macedonia",
+        "norway",
+        "poland",
+        "portugal",
+        "romania",
+        "san marino",
+        "serbia",
+        "slovakia",
+        "slovenia",
+        "spain",
+        "sweden",
+        "switzerland",
+        "turkey",
+        "ukraine",
+        "united kingdom",
+        "canada",
+        "curacao",
+        "dominican republic",
+        "greenland",
+        "guatemala",
+        "mexico",
+        "puerto rico",
+        "united states",
+        "virgin islands",
+        "american samoa",
+        "australia",
+        "guam",
+        "new zealand",
+        "northern mariana islands",
+        "argentina",
+        "bolivia",
+        "brazil",
+        "chile",
+        "colombia",
+        "ecuador",
+        "peru",
+        "uruguay"
+    ];
 
     const areas = {
         "Africa": [
@@ -249,44 +217,130 @@ export const WorldMap: FC = () => {
             "Peru",
             "Uruguay"
         ]
-    }
-    
-    const handleEachFeature = (feature: any, layer: any) => {
-        layer.on({
-            click: (e: any) => {
-                navigate('/country/' + e?.target?.feature?.properties.ADMIN)
-            }
-        });
     };
 
-    return(
-        <div>
-            <div style={{width: '20%', display: 'inline-block'}}>
-                {Object.keys(areas).map(area => (
-                    <div> {area}
-                        {/* <ol>
+    const getData = async () => {
+        const getter = axios.create({
+            baseURL: 'http://localhost:3000'
+        });
 
-                            {areas[area].map(country => (
-                                <li>{country}</li>
-                            ))}
-                        </ol> */}
-                    </div>
-                ))}
+        getter.get('/countryPaths/mapdata.json').then(data => {
+            setPaths(data.data)
+        }).catch((err) => {
+            console.log("error")
+            console.log(err)
+        });
+    }
+
+    const navigateToCountry = (country: string) => {
+        console.log("Triggered", country)
+        if (apiCountries.includes(country)) {
+            navigate('/country/' + country)
+        }
+    }
+
+    
+    useEffect(() => {
+        getData();
+
+        // make svg zoomable and scrollable
+        let shape = document.getElementsByTagName('svg')[0];
+
+        let mouseStartPosition = {x: 0, y: 0};
+        let mousePosition = {x: 0, y: 0};
+        let viewboxStartPosition = {x: 0, y: 0};
+        let viewboxPosition = {x: 0, y: 0};
+        let viewboxSize = {x: 480, y: 480};
+        let viewboxScale = 1.0;
+        let mouseDown = false;
+    
+        const mousedown = (e: any) => {
+            mouseStartPosition.x = e.pageX;
+            mouseStartPosition.y = e.pageY;
+            
+            viewboxStartPosition.x = viewboxPosition.x;
+            viewboxStartPosition.y = viewboxPosition.y;
+            
+            window.addEventListener("mouseup", mouseup);
+            
+            mouseDown = true;
+        }
+        const setviewbox = () => {
+            var vp = {x: 0, y: 0};
+            var vs = {x: 0, y: 0};
+            
+            vp.x = viewboxPosition.x;
+            vp.y = viewboxPosition.y;
+            
+            vs.x = viewboxSize.x * viewboxScale;
+            vs.y = viewboxSize.y * viewboxScale;
+    
+            shape = document.getElementsByTagName("svg")[0];
+            shape.setAttribute("viewBox", vp.x + " " + vp.y + " " + vs.x + " " + vs.y);
+        
+        }
+    
+        const mouseup = (e: any) => {
+            window.removeEventListener("mouseup", mouseup);
+            
+            mouseDown = false;
+        }
+
+        const mousemove = (e: any) => {
+            mousePosition.x = e.offsetX;
+            mousePosition.y = e.offsetY;
+            
+            if (mouseDown)
+            {
+                viewboxPosition.x = viewboxStartPosition.x + (mouseStartPosition.x - e.pageX) * viewboxScale;
+                viewboxPosition.y = viewboxStartPosition.y + (mouseStartPosition.y - e.pageY) * viewboxScale;
+
+                setviewbox();
+            }
+        }
+    
+        const wheel = (e: any) => {
+            var scale = (e.deltaY < 0) ? 0.8 : 1.2;
+            
+            if ((viewboxScale * scale < 8.) && (viewboxScale * scale > 1./256.))
+            {  
+                var mpos = {x: mousePosition.x * viewboxScale, y: mousePosition.y * viewboxScale};
+                var vpos = {x: viewboxPosition.x, y: viewboxPosition.y};
+                var cpos = {x: mpos.x + vpos.x, y: mpos.y + vpos.y}
+    
+                viewboxPosition.x = (viewboxPosition.x - cpos.x) * scale + cpos.x;
+                viewboxPosition.y = (viewboxPosition.y - cpos.y) * scale + cpos.y;
+                viewboxScale *= scale;
+            
+                setviewbox();
+            }
+        }
+
+        shape.addEventListener("wheel", wheel);
+        shape.addEventListener("mousedown", mousedown);
+        shape.addEventListener("mousemove", mousemove);
+    }, [])
+
+    useEffect(() => {
+        apiCountries.forEach(country => {
+            let el = document.getElementById(country);
+            if (el) {
+                el.setAttribute('fill', '#0dbdf7')
+            }
+        })
+    }, [paths])
+
+    return(
+        <div key="outerDiv">
+            <div key="worldMapContainer" style={{width: '55rem', position: 'relative', margin: '0 auto'}}>
+                <svg key="worldMap" viewBox="130 20 700 510" style={{pointerEvents: 'all'}} width="820" height="520px" >
+                    {paths && paths.map(path => (
+                        // <div >
+                            <path id={path.name} onClick={() => navigateToCountry(path.name)} fill={gameCountries.includes(path.name) ? "#e5dcce" : "#f1f1f1"} d={path.d_val}></path>
+                        // </div>
+                    ))}
+                </svg>
             </div>
-            <MapContainer center={[25, 0]} maxBounds={[[85,-180], [-85,180]]} dragging={true} zoom={3} style={{height: '100vh', width: '80%', display: 'flex'}} >
-                    <>
-                        <TileLayer
-                            noWrap={true}
-                            maxZoom={5}
-                            minZoom={3}
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-                        />
-                        {countries.map(country => (
-                            <CountryOutline country={country} onEachFeature={handleEachFeature} />
-                        ))}
-                    </>
-            </MapContainer>
         </div>
     )
 }

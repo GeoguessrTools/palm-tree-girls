@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import {
-  Country,
+  CountryPage,
   WorldMap
 } from './components';
 import './App.css'
@@ -21,7 +21,7 @@ export const App: FC = () => {
         <main>
           <Routes>
             <Route path='/' element={<WorldMap/>}/>
-            <Route path='/country/:country' element={<Country/>}/>
+            <Route path='/country/:country' element={<CountryPage/>}/>
           </Routes>
         </main>
       </Router>

@@ -1,11 +1,18 @@
 .flex-container {
     display: flex;
     flex-wrap: wrap;
-    padding: 2%;
+}
+
+.flex-fourths {
+    flex-basis: 25%; 
 }
 
 .flex-third {
     flex-basis: 32%;
+}
+
+.flex-sixths {
+    flex-basis: 16%;
 }
 
 .flex-two-third {
@@ -37,4 +44,27 @@
     padding: 1rem;
     font-size: 50px;
     background-color: lightgray;
+}
+
+.top-level-container {
+    padding: 2%;
+}
+
+.sign-flex-1 {
+    flex-basis: 16%
+}
+.sign-flex-2 {
+    flex-basis: 32%
+}
+.sign-flex-3 {
+    flex-basis: 48%
+}
+.sign-flex-4 {
+    flex-basis: 64%
+}
+.sign-flex-5 {
+    flex-basis: 84%
+}
+.sign-flex-6 {
+    flex-basis: 100%
 }

@@ -9,13 +9,29 @@ export type BollardsAndExtra = {
 }
 
 export type SignageAndTraffic = {
-	yieldSigns:     ImageWithDescription[],
-	stopSigns:      ImageWithDescription[],
-	pedestrianSigns:ImageWithDescription[],
-	directionSigns: ImageWithDescription[],
-	speedSigns:     ImageWithDescription[],
+	yield_signs:     ImageWithDescription[],
+	stop_signs:      ImageWithDescription[],
+	pedestrian_signs:ImageWithDescription[],
+	direction_signs: ImageWithDescription[],
+	speed_signs:     ImageWithDescription[],
 	chevrons:       ImageWithDescription[],
-	licensePlates:  ImageWithDescription[],
-	highwaySigns:   ImageWithDescription[],
-	streetLines:    ImageWithDescription[]
+	license_plates:  ImageWithDescription[],
+	highway_signs:   ImageWithDescription[],
+	street_lines:    ImageWithDescription[]
+}
+
+export type Meta = {
+	car: ImageWithDescription[];
+	sky: ImageWithDescription[];
+	camera: ImageWithDescription[];
+}
+
+export type AreaCode = {
+	code: string,
+	location: string
+}
+
+export type UtilityPoles = {
+	poles: ImageWithDescription[],
+	extra_notes: string[]
 }
