@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { BollardsAndExtra } from './geolearnrTypes';
+import { Hint } from './geolearnrTypes';
 import './flex.css';
 import { BaseBox } from './baseBox';
 
 type BollardsInfoProps = {
-    bollards?: BollardsAndExtra | undefined;
+    bollards?: Hint[] | undefined;
 }
 
 export const BollardsInfo:FC<BollardsInfoProps> = ({
@@ -13,7 +13,7 @@ export const BollardsInfo:FC<BollardsInfoProps> = ({
     return(
         <BaseBox title="Bollards">
             <div id="bollardInfo" className="flex-container">
-                {bollards && bollards?.info.map(bollard => (
+                {bollards && bollards.map(bollard => (
                     <div className="flex-fifths">
                         <div style={{textAlign: 'center'}}>{bollard.description}</div>
                         <img src={bollard.image_url} style={{width: '90%', display: 'block', margin: '0px auto', maxHeight: '200px'}}/>

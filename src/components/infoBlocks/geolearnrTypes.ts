@@ -1,29 +1,39 @@
-export type ImageWithDescription = {
-    image_url: string;
-    description: string;
+import { float } from "aws-sdk/clients/lightsail";
+
+export type Hint = {
+    image_url: string | undefined;
+	alt_image_url: string | undefined;
+	google_maps_example: string | undefined;
+    description: string | undefined;
+	significance: string | undefined;
+	region_specificity: float | undefined;
+	country_specificity: float | undefined;
+	frequency: float | undefined;
+	identifier: string | undefined;
+	tags: string[] | undefined;
 }
 
-export type BollardsAndExtra = {
-    notes: string[],
-    info: ImageWithDescription[]
+export type Signs = {
+	yield:     Hint[],
+	stop:      Hint[],
+	pedestrian:Hint[],
+	direction: Hint[],
+	speed:     Hint[],
+	chevrons:  Hint[],
+	street:    Hint[],
+	transit:   Hint[]
 }
 
-export type SignageAndTraffic = {
-	yield_signs:     ImageWithDescription[],
-	stop_signs:      ImageWithDescription[],
-	pedestrian_signs:ImageWithDescription[],
-	direction_signs: ImageWithDescription[],
-	speed_signs:     ImageWithDescription[],
-	chevrons:       ImageWithDescription[],
-	license_plates:  ImageWithDescription[],
-	highway_signs:   ImageWithDescription[],
-	street_lines:    ImageWithDescription[]
+export type Road = {
+	street_lines: Hint[],
+	material: Hint[],
+	quality: float;
 }
 
 export type Meta = {
-	car: ImageWithDescription[];
-	sky: ImageWithDescription[];
-	camera: ImageWithDescription[];
+	car: Hint[];
+	sky: Hint[];
+	camera: Hint[];
 }
 
 export type AreaCode = {
@@ -32,6 +42,6 @@ export type AreaCode = {
 }
 
 export type UtilityPoles = {
-	poles: ImageWithDescription[],
+	poles: Hint[],
 	extra_notes: string[]
 }

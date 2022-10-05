@@ -27,14 +27,12 @@ export const CountryInfo:FC<CountryInfoProps> = ({
                     <div id="textualGeneralInfo" className="flex-third">
                         {flagUrl && (
                             <div id="countryFlag" className="flex-third">
-                                <img src={flagUrl} />
+                                <img src={flagUrl} style={{width: '100%',}}/>
                             </div>
                         )}
                         {continent && (<div><b>Continent: </b>{continent}</div>)}
                         <br/>
-                        {languages && (<div><b>Languages: </b>{languages.map(language => (
-                            <span>{language}</span>
-                            ))}
+                        {languages && (<div><b>Languages: </b>{<span>{languages.join(', ')}</span>}
                         </div>)}
                         <br/>
                         {capital && (<div><b>Capital City: </b>{capital}</div>)}
@@ -53,7 +51,7 @@ export const CountryInfo:FC<CountryInfoProps> = ({
                     {mapUrl && (
                         <div id="countryMap" className="flex-full">
                             <h2>General Map</h2>
-                            <img src={mapUrl} />
+                            <img src={mapUrl} style={{width: '50%'}}/>
                         </div>
                     )}
                 </div>

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const WorldMap: FC = () => {
     const [paths, setPaths] = useState<any[]>([]);
-    const [apiCountries, setApiCountries] = useState<string[]>(['argentina']);
+    const [apiCountries, setApiCountries] = useState<string[]>(['argentina', 'new zealand']);
     const navigate = useNavigate();
     const gameCountries = [
         "botswana",

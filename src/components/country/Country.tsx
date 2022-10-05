@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import { BollardsInfo } from '../infoBlocks/BollardsInfo';
 import { CountryInfo } from '../infoBlocks/CountryInfo';
 import { MetaInfo } from '../infoBlocks/MetaInfo';
-import { SignageAndTrafficInfo } from '../infoBlocks/SignageAndTraffic';
-import { AreaCode, BollardsAndExtra, ImageWithDescription, Meta, SignageAndTraffic, UtilityPoles } from '../infoBlocks/geolearnrTypes';
+import { SignsInfo } from '../infoBlocks/SignsInfo';
+import { AreaCode, Hint, Meta, Road, Signs, UtilityPoles } from '../infoBlocks/geolearnrTypes';
 import axios, { AxiosResponse } from 'axios';
+import { capitalStr } from '..';
 
 type Country = {
+	name: string,
 	flag_url: string,
 	map_url: string,
 	continent: string,
@@ -17,11 +19,14 @@ type Country = {
 	notes: string[],
 	right_drive: boolean,
 	meta: Meta,
-	bollards_and_extras: BollardsAndExtra,
-	signage_and_traffic: SignageAndTraffic,
-	area_codes: AreaCode,
+	bollards_barricades_snowpoles: Hint[],
+	signs: Signs,
+	area_codes: AreaCode[],
 	utility_poles: UtilityPoles,
-	misc: ImageWithDescription[]
+	misc: Hint[],
+	vehicles: Hint[],
+	license_plates: Hint[],
+	road: Road,
 }
 
 export const CountryPage: FC = () => {
@@ -31,7 +36,7 @@ export const CountryPage: FC = () => {
 
 	const getCountryData = async () => {
 		console.log("Country", country)
-		await axios.get(process.env.REACT_APP_API_VER + `/countries/${country}`).then(data => {
+		await axios.get(process.env.REACT_APP_API_VER + `/countries/${country.replaceAll(' ', '-')}`).then(data => {
 			console.log("Data", data)
 			setCountryData(data.data)
 		})
@@ -43,7 +48,8 @@ export const CountryPage: FC = () => {
 
     return(
         <div>
-            <h1>{country?.charAt(0).toUpperCase()}{country?.slice(1)}!</h1>
+            {/* <h1>{country?.charAt(0).toUpperCase()}{country?.slice(1)}!</h1> */}
+            <h1>{capitalStr(country)}!</h1>
             {countryData && (
 			<div>
 				<CountryInfo
@@ -57,12 +63,14 @@ export const CountryPage: FC = () => {
 				/>
 				<MetaInfo
 					carMeta={countryData.meta.car}
+					skyMeta={countryData.meta.sky}
+					camMeta={countryData.meta.camera}
 				/>
 				<BollardsInfo
-					bollards={countryData.bollards_and_extras}
+					bollards={countryData.bollards_barricades_snowpoles}
 				/>
-				<SignageAndTrafficInfo
-					signs={countryData.signage_and_traffic}
+				<SignsInfo
+					signs={countryData.signs}
 				/>
 			</div>)}
         </div>
